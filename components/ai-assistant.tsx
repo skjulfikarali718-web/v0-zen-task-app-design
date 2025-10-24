@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Send, X, Loader, Sparkles } from "lucide-react"
+import { MessageCircle, Send, X, Loader } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 interface Message {
@@ -64,36 +64,15 @@ export function AIAssistant() {
 
   return (
     <>
-      <motion.div className="fixed bottom-8 right-8 z-40 flex flex-col items-center gap-3">
-        {/* Pulsing glow effect */}
-        <motion.div
-          animate={{ scale: [1, 1.2, 1] }}
-          transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-          className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 opacity-30 blur-xl"
-          style={{ width: "80px", height: "80px", left: "-8px", top: "-8px" }}
-        />
-
-        {/* Main button with gradient and larger size */}
-        <motion.button
-          whileHover={{ scale: 1.15 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={() => setIsOpen(!isOpen)}
-          className="relative w-16 h-16 rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-600 text-white shadow-2xl flex items-center justify-center font-bold text-sm hover:shadow-cyan-500/50 transition-all duration-300 border-2 border-white/20 backdrop-blur-sm"
-        >
-          <div className="flex flex-col items-center gap-1">
-            <Sparkles size={24} className="animate-pulse" />
-            <span className="text-xs font-bold">AI</span>
-          </div>
-        </motion.button>
-
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileHover={{ opacity: 1, y: 0 }}
-          className="absolute bottom-20 right-0 bg-gradient-to-r from-cyan-400 to-blue-500 text-white px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap shadow-lg pointer-events-none"
-        >
-          Chat with Zen AI
-        </motion.div>
-      </motion.div>
+      {/* Floating Button */}
+      <motion.button
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => setIsOpen(!isOpen)}
+        className="fixed bottom-8 right-8 glass soft-glow rounded-full p-4 text-primary hover:text-primary/80 transition-colors z-40"
+      >
+        <MessageCircle size={24} />
+      </motion.button>
 
       {/* Chat Modal */}
       <AnimatePresence>
@@ -102,13 +81,11 @@ export function AIAssistant() {
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="fixed bottom-24 right-8 w-96 max-w-[calc(100vw-2rem)] glass soft-glow rounded-2xl overflow-hidden z-50 flex flex-col max-h-96 border-2 border-cyan-400/30"
+            className="fixed bottom-24 right-8 w-96 max-w-[calc(100vw-2rem)] glass soft-glow rounded-2xl overflow-hidden z-50 flex flex-col max-h-96"
           >
-            <div className="bg-gradient-to-r from-cyan-400/20 to-blue-500/20 p-4 flex items-center justify-between border-b border-cyan-400/20">
-              <div className="flex items-center gap-2">
-                <Sparkles size={20} className="text-cyan-400 animate-pulse" />
-                <h3 className="font-bold text-foreground">Zen AI Companion</h3>
-              </div>
+            {/* Header */}
+            <div className="bg-primary/20 p-4 flex items-center justify-between border-b border-foreground/10">
+              <h3 className="font-bold text-foreground">Zen AI Companion</h3>
               <button
                 onClick={() => setIsOpen(false)}
                 className="text-foreground/60 hover:text-foreground transition-colors"

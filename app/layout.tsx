@@ -13,27 +13,6 @@ export const metadata: Metadata = {
   title: "ZenTask – Focus, Relax & Grow",
   description: "Your peaceful space to focus, relax, and grow every day",
   generator: "v0.app",
-  openGraph: {
-    title: "ZenTask – Focus, Relax & Grow",
-    description: "Your peaceful space to focus, relax, and grow every day",
-    url: "https://yourapp.com",
-    siteName: "ZenTask",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "ZenTask OG Image",
-      },
-    ],
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "ZenTask – Focus, Relax & Grow",
-    description: "Your peaceful space to focus, relax, and grow every day",
-    images: ["/og-image.png"],
-  },
 };
 
 export default function RootLayout({
@@ -41,28 +20,51 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${poppins.className} font-sans antialiased bg-gray-900 text-white flex flex-col min-h-screen`}>
-        
+      <body className={`${poppins.className} font-sans antialiased flex flex-col min-h-screen relative`}>
+
+        {/* Animated Gradient Background */}
+        <div className="absolute top-0 left-0 w-full h-full -z-20 bg-gradient-to-r from-purple-800 via-indigo-900 to-gray-900 animate-gradient-x"></div>
+
+        {/* Floating Particles */}
+        <div id="particles" className="absolute top-0 left-0 w-full h-full -z-10 pointer-events-none">
+          {Array.from({ length: 50 }).map((_, i) => (
+            <span
+              key={i}
+              className="absolute bg-white/20 rounded-full animate-particle"
+              style={{
+                width: `${Math.random() * 4 + 1}px`,
+                height: `${Math.random() * 4 + 1}px`,
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                animationDuration: `${Math.random() * 20 + 15}s`,
+                animationDelay: `${Math.random() * 5}s`,
+              }}
+            ></span>
+          ))}
+        </div>
+
         {/* Header */}
-        <header className="w-full p-6 bg-gray-900">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <h1 className="text-2xl font-bold">ZenTask</h1>
-            <nav className="flex gap-6 text-gray-300">
-              <a href="/" className="hover:text-indigo-400 transition-colors">Home</a>
-              <a href="/about" className="hover:text-indigo-400 transition-colors">About</a>
-              <a href="/contact" className="hover:text-indigo-400 transition-colors">Contact</a>
+        <header className="w-full p-8 bg-gray-900/70 backdrop-blur-sm">
+          <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <h1 className="text-3xl md:text-4xl font-bold">ZenTask</h1>
+            <nav className="flex flex-wrap justify-center md:justify-end gap-6 text-gray-300">
+              <a href="/" className="hover:text-indigo-400 transition-colors whitespace-nowrap">Home</a>
+              <a href="/about" className="hover:text-indigo-400 transition-colors whitespace-nowrap">About</a>
+              <a href="/contact" className="hover:text-indigo-400 transition-colors whitespace-nowrap">Contact</a>
             </nav>
           </div>
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 max-w-7xl mx-auto p-6 w-full">
-          {children}
+        <main className="flex-1 w-full p-6">
+          <div className="max-w-4xl mx-auto flex flex-col gap-8">
+            {children}
+          </div>
         </main>
 
         {/* Footer */}
-        <footer className="w-full bg-gray-900 p-6 text-gray-400 mt-auto">
-          <div className="max-w-7xl mx-auto text-center flex flex-col gap-2">
+        <footer className="w-full bg-gray-900/70 backdrop-blur-sm p-8 text-gray-400 mt-auto">
+          <div className="max-w-4xl mx-auto text-center flex flex-col gap-3">
             <p>© 2025 ZenTask. All rights reserved.</p>
             <p>
               Follow us on{" "}
@@ -72,6 +74,38 @@ export default function RootLayout({
           </div>
         </footer>
 
+        {/* Animations */}
+        <style jsx>{`
+          @keyframes gradient-x {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+          }
+          .animate-gradient-x {
+            background-size: 200% 200%;
+            animation: gradient-x 15s ease infinite;
+          }
+
+          @keyframes particle {
+            0% { transform: translateY(0) translateX(0); opacity: 0.2; }
+            50% { transform: translateY(-30px) translateX(15px); opacity: 0.4; }
+            100% { transform: translateY(0) translateX(0); opacity: 0.2; }
+          }
+          .animate-particle {
+            animation: particle linear infinite;
+          }
+        `}</style>
+
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              const particles = document.getElementById('particles');
+              window.addEventListener('scroll', () => {
+                const scrollY = window.scrollY;
+                particles.style.transform = 'translateY(' + scrollY * 0.1 + 'px)';
+              });
+            `,
+          }}
+        />
       </body>
     </html>
   );
